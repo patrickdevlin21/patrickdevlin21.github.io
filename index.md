@@ -31,13 +31,21 @@ element.addEventListener("click", function() {
 <h2>The XMLHttpRequest Object</h2>
 <button type="button" onclick="loadDoc()">Change Content</button>
 </div>
+<div id="spot1">
+  Should be green
+</div>
+
+<div id="spot2">
+  Should be yellow
+</div>
 
 <script>
 function loadDoc() {
   const xhttp = new XMLHttpRequest();
   xhttp.onload = function() {
-    document.getElementById("demo").innerHTML =
-    this.responseText;
+    document.getElementById("demo").style.background='#000000';
+    document.getElementById("spot1").style.background='#00FF00';
+    document.getElementById("spot1").style.background='#FFFF00';
   }
   xhttp.open("GET", "ajax_info.txt");
   xhttp.send();
