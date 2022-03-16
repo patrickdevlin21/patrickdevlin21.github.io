@@ -16,6 +16,17 @@ Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://j
     </div>
 </div>
 
+<button id="myBtn">Try it</button>
+
+<p id="demo"></p>
+
+<script>
+const element = document.getElementById("myBtn");
+element.addEventListener("click", function() {
+  document.getElementById("demo").innerHTML = "Hello World";
+});
+</script>
+
 
 ### Markdown
 
