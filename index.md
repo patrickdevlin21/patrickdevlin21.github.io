@@ -1,87 +1,156 @@
-## This is my page!  I did it!
-
-You can use the [editor on GitHub](https://github.com/patrickdevlin21/patrickdevlin21.github.io/edit/main/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-
-<br>
-<br>
-
-<div class="container">
-    <div id="repo-cards" class="columns is-multiline list">
-      <div class="column is-3-widescreen is-4-desktop is-6-tablet is-8-mobile">
-        Hi!  This should be a thing!
-      </div>
-    </div>
-</div>
-
-<button id="myBtn">Try it</button>
-
-<p id="demo"></p>
-
-<script>
-const element = document.getElementById("myBtn");
-element.addEventListener("click", function() {
-  document.getElementById("demo").innerHTML = "Hello World";
-});
-</script>
-
-<div id="demo">
-<h2>The XMLHttpRequest Object</h2>
-<button type="button" onclick="loadDoc()">Change Content</button>
-</div>
-<div id="spot1">
-  Should be green
-</div>
-
-<div id="spot2">
-  Should be yellow
-</div>
-
-<script>
-function loadDoc() {
-  const xhttp = new XMLHttpRequest();
-  xhttp.onload = function() {
-    document.getElementById("demo").style.background='#000000';
-    document.getElementById("spot1").style.background='#00FF00';
-    document.getElementById("spot1").style.background='#FFFF00';
-  }
-  xhttp.open("GET", "ajax_info.txt");
-  xhttp.send();
+<style>
+.letter{
+  border: 2px solid gray;
+  border-radius: 3px;
+  margin: 2px;
+  font-size: 1.8rem;
+  font-weight: 700;
+  height: 3rem;
+  width: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: last baseline;
+  text-transform: uppercase;
+  background: #D5DBDB;
 }
+.row{
+ display: flex;
+ align-items: center;
+}
+.more-button{
+  margin: 3px;
+  color: green;
+}
+.delete-button{
+  margin: 3px;
+  color: red;
+}
+.error-message{
+  margin: 3px;
+  color: red;
+}
+</style>
+
+## Wordle Helper!
+
+This is a script to help with the wordle puzzle.  Simply type each word that you've guessed so far in the corresponding text box.  Select the revealed color of each letter by clicking on the corresponding square.
+
+
+<div id="input-board">
+
+</div>
+
+
+<br> <br>
+
+
+<div id="submit">
+<button type="button" onclick="submitWordle()">Get help with the above wordle!</button>
+</div>
+<div id="error-submitting" class="error-message"></div>
+<div id="wordle-output"></div>
+
+
+
+
+<script>
+
+function makeNewRow() {
+  let board=document.getElementById("input-board");
+  let row = document.createElement("div");
+  row.className = "row";
+  let word = document.createElement("div");
+  word.className = "row";
+  for( let j = 0; j < 5; j++){
+    let box = document.createElement("div");
+    box.className = "letter";
+    box.setAttribute("data-color", "_");
+    box.setAttribute("onclick", "changeColor(this)");
+    word.appendChild(box);
+  };
+  row.appendChild(word);
+
+  let inputBox = document.createElement("input");
+  inputBox.setAttribute("type", "text");
+  inputBox.setAttribute("onchange", "populateGuess(this)");
+  row.appendChild(inputBox);
+
+  let moreButton = document.createElement("button");
+  moreButton.setAttribute("type", "button");
+  moreButton.setAttribute("onclick", "makeNewRow()");
+  moreButton.className = "more-button";
+  moreButton.innerText = "Another word";
+  row.appendChild(moreButton);
+
+  let deleteButton = document.createElement("button");
+  deleteButton.setAttribute("type", "button");
+  deleteButton.setAttribute("onclick", "deleteRow(this)");
+  deleteButton.className = "delete-button";
+  deleteButton.innerText = "Remove word";
+  row.appendChild(deleteButton);
+  
+  board.appendChild(row);
+};
+
+function deleteRow(element) {
+  let row = element.parentNode;
+  let board = row.parentNode;
+  row.parentNode.removeChild(row);
+  if(board.children.length == 0){
+    makeNewRow();
+  }
+};
+
+makeNewRow();
+
+
+function populateGuess(element){
+  let newWord = element.value + "     ";
+  let word = element.parentElement.children[0].children;
+  for(let j = 0; j < word.length; j++){
+    word[j].innerHTML=newWord[j];
+  }
+};
+
+function changeColor(element) {
+  switch(element.getAttribute("data-color")){
+    case "_":
+      element.setAttribute("data-color","$");
+      element.style.background='#00FF00';
+      break;
+    case "$":
+      element.setAttribute("data-color","?");
+      element.style.background='#FFFF00';
+      break;
+    default:
+      element.setAttribute("data-color","_");
+      element.style.background='#D5DBDB';
+      break;
+  }
+};
+
+function isGuessBad(word){
+  if(word.length == 5){
+    return false;
+  }else{
+    return true;
+  };
+};
+
+function submitWordle(){
+  let board=document.getElementById("input-board");
+  let rows = board.children;
+  let errorSpot = document.getElementById("error-submitting");
+  for(let j =0; j < rows.length; j++){
+    if(isGuessBad(rows[j].children[1].value)){ 
+      errorSpot.innerHTML="Error!  You need to make sure all the words typed are five letters long, and they shouldn't contain any special characters or numbers.";
+      return;
+    }
+  }
+  errorSpot.innerHTML = "";
+  let output = document.getElementById("wordle-output");
+  output.innerHTML="Meep-morp!  Robot brain!  Output will go here.";
+};
+
+
 </script>
-
-
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/patrickdevlin21/patrickdevlin21.github.io/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
