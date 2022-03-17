@@ -37,7 +37,7 @@ This is a script to help with the wordle puzzle.  Simply enter each word that yo
 
 
 <div>
-<b>New word:</b> <input type="text" id="wordle-input-box" onchange="makeNewRow()" maxlength="5" size="5"><button type="button" onclick="makeNewRow()" class="more-button">Add</button>
+<b>New word:</b> <input type="text" id="wordle-input-box" onchange="makeNewRow()" maxlength="5" size="7"><button type="button" onclick="makeNewRow()" class="more-button">Add</button>
 </div>
 
 <div id="input-board">
