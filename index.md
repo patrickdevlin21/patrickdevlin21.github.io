@@ -37,7 +37,7 @@ This is a script to help with the wordle puzzle.  Simply enter each word that yo
 
 
 <div>
-<b>New word:</b> <input type="text" id="wordle-input-box" onchange="makeNewRow2()" maxlength="5" size="5"><button type="button" onclick="makeNewRow2()" class="more-button">Add</button>
+<b>New word:</b> <input type="text" id="wordle-input-box" onchange="makeNewRow()" maxlength="5" size="5"><button type="button" onclick="makeNewRow()" class="more-button">Add</button>
 </div>
 
 <div id="input-board">
@@ -58,12 +58,16 @@ This is a script to help with the wordle puzzle.  Simply enter each word that yo
 
 
 <script>
-function makeNewRow2() {
+function makeNewRow() {
   let word = document.getElementById("wordle-input-box").value;
+  let board=document.getElementById("input-board");
   if(word.length != 5){
     return;
   }
-  let board=document.getElementById("input-board");
+  if(word == board.lastChild.getAttribute("data-word")){
+    return;
+  }
+
   
   if(board.lastChild.getAttribute("data-is-template") == "T"){
     board.removeChild(board.lastChild);  
