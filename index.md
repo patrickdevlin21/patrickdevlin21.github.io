@@ -40,7 +40,7 @@ This is a script written by Pat Devlin to help solve the popular wordle puzzle. 
 
 
 <div>
-<b>New word:</b> <input type="text" id="wordle-input-box" onchange="makeNewRow()" maxlength="5" size="7"><button type="button" onclick="makeNewRow()" class="more-button">Add</button>
+<b>New word:</b> <input type="text" id="wordle-input-box" onchange="makeNewRow()" maxlength="5" size="7"><button type="button" onclick="makeNewRow()" class="more-button">Enter</button>
 </div>
 
 <div id="input-board">
