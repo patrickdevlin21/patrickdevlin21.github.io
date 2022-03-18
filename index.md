@@ -60,11 +60,7 @@ This is a script written by Pat Devlin to help solve the popular wordle puzzle. 
 
 <div id="wordle-output">
 
-
-
-
-<br>
-
+<h2>Output</h2>
 <span id="output-message" hidden></span>
 
 <b onclick="toggleSpoilers('consistent-words')">Number of solutions: </b><span id="number-of-words-consistent" class="consistent-words spoilers"></span>
