@@ -53,7 +53,7 @@ This is a script written by Pat Devlin to help solve the popular wordle puzzle. 
 
 <div id="submit">
 <button type="button" onclick="submitWordle()">Solve wordle!</button>
-<label for="spoiler-mode">Hide output?</label><input type="checkbox" id="spoiler-mode" onclick="toggleAllSpoilers()" checked>
+<label for="spoiler-mode">Hide output?</label><input type="checkbox" id="spoiler-mode" onclick="toggleAllSpoilers()">
 </div>
 <div id="error-submitting" class="error-message"></div>
 <em><span id="thinking-while-submitting" class="message" font-style="italic">Click above to solve</span></em>
@@ -80,7 +80,12 @@ This is a script written by Pat Devlin to help solve the popular wordle puzzle. 
 
 </div>
 
+
+<h2>About:</h2>
+
 *To avoid spoilers, you can select that the output of the function be hidden.  If so, individual pieces of output can then be revealed or hidden by clicking on their corresponding text.
+
+I'll also put a description of the algorithms used as well as how this site works here.  Content, content, content.  Also, I should probably reformat a bit so everything looks good.
 
 
 
