@@ -38,6 +38,7 @@
 
 This is a script written by Pat Devlin to help solve the popular wordle puzzle.  Simply enter each word that you've guessed so far into the text box.  Select the revealed color of each letter by clicking on the corresponding square.
 
+<button id="random-input" onclick="makeRandomInput()">Random input</button>
 
 <div>
 <b>New word:</b> <input type="text" id="wordle-input-box" onchange="makeNewRow()" maxlength="5" size="7"><button type="button" onclick="makeNewRow()" class="more-button">Enter</button>
@@ -55,8 +56,15 @@ This is a script written by Pat Devlin to help solve the popular wordle puzzle. 
 <button type="button" onclick="submitWordle()">Solve wordle!</button>
 <label for="spoiler-mode">Hide output?</label><input type="checkbox" id="spoiler-mode" onclick="toggleAllSpoilers()">
 </div>
+
 <div id="error-submitting" class="error-message"></div>
 <em><span id="thinking-while-submitting" class="message" font-style="italic">Click above to solve</span></em>
+
+<br>
+
+<div>
+<button id="reset-colors" onclick="clearColors()">Clear colors</button><button id="reset-words" onclick="reset()">Reset</button></div>
+
 
 <div id="wordle-output">
 
@@ -81,9 +89,11 @@ This is a script written by Pat Devlin to help solve the popular wordle puzzle. 
 </div>
 
 
+
+
 <h2>About:</h2>
 
-*To avoid spoilers, you can select that the output of the function be hidden.  If so, individual pieces of output can then be revealed or hidden by clicking on their corresponding text.
+To avoid spoilers, you can select that the output of the function be hidden.  If so, individual pieces of output can then be revealed or hidden by clicking on their corresponding text.
 
 I'll also put a description of the algorithms used as well as how this site works here.  Content, content, content.  Also, I should probably reformat a bit so everything looks good.
 
@@ -91,8 +101,10 @@ I'll also put a description of the algorithms used as well as how this site work
 
 
 <script>
-function makeNewRow() {
-  let word = document.getElementById("wordle-input-box").value;
+function makeNewRow(word = "", colors = "bbbbb") {
+  if(word == ""){
+    word = document.getElementById("wordle-input-box").value;
+  }
   let board=document.getElementById("input-board");
   if(word.length != 5){
     return;
@@ -100,7 +112,9 @@ function makeNewRow() {
   if(word == board.lastChild.getAttribute("data-word")){
     return;
   }
-
+  if(colors.length != 5){
+    colors = "bbbbb";
+  }
   
   if(board.lastChild.getAttribute("data-is-template") == "T"){
     board.removeChild(board.lastChild);  
@@ -113,13 +127,14 @@ function makeNewRow() {
   letterString.className = "row";
 
   row.setAttribute("data-word", word);
-  let newWord = word + "     ";
+
   for( let j = 0; j < 5; j++){
     let box = document.createElement("div");
     box.className = "letter";
     box.setAttribute("data-color", "_");
-    box.setAttribute("onclick", "changeColor(this)");
-    box.innerHTML=newWord[j];
+    setColor(box, colors[j]);
+    box.setAttribute("onclick", "toggleBoxColor(this)");
+    box.innerHTML=word[j];
     letterString.appendChild(box);
   };
   row.appendChild(letterString);
@@ -132,6 +147,7 @@ function makeNewRow() {
   row.appendChild(deleteButton);
   
   board.appendChild(row);
+  document.getElementById("wordle-input-box").value = "";
 };
 
 function makeTemplateRow() {
@@ -149,7 +165,7 @@ function makeTemplateRow() {
   for( let j = 0; j < 5; j++){
     let box = document.createElement("div");
     box.className = "letter";
-    box.setAttribute("data-color", "_");
+    setColor(box, "gray");
     box.innerHTML=newWord[j];
     letterString.appendChild(box);
   };
@@ -163,29 +179,45 @@ makeTemplateRow();
 function deleteRow(element) {
   let row = element.parentNode;
   let board = row.parentNode;
-  row.parentNode.removeChild(row);
+  board.removeChild(row);
   if(board.children.length == 0){
     makeTemplateRow();
   }
 };
 
 
-function changeColor(element) {
-  switch(element.getAttribute("data-color")){
-    case "_":
-      element.setAttribute("data-color","?");
-      element.style.background='#FFFF00';
+function setColor(box,c){
+  switch(c){
+    case "y":
+      box.setAttribute("data-color","?");
+      box.style.background='#FFFF00';
       break;
-    case "?":
-      element.setAttribute("data-color","$");
-      element.style.background='#00FF00';
+    case "g":
+      box.setAttribute("data-color","$");
+      box.style.background='#00FF00';
       break;
     default:
-      element.setAttribute("data-color","_");
-      element.style.background='#D5DBDB';
+      box.setAttribute("data-color","_");
+      box.style.background='#D5DBDB';
+      break;
+  }
+
+};
+
+function toggleBoxColor(element) {
+  switch(element.getAttribute("data-color")){
+    case "_":
+      setColor(element,"y");
+      break;
+    case "?":
+      setColor(element,"g");
+      break;
+    default:
+      setColor(element,"b");
       break;
   }
 };
+
 
 function isGuessBad(word){
   if(word.length == 5){
@@ -274,7 +306,7 @@ function updateOutputAfterAPICall(res){
   if(validWords.length < 20){
     document.getElementById("list-of-words-consistent").innerHTML = validWords.join(', ');
   }else{
-    document.getElementById("list-of-words-consistent").innerHTML = validWords.splice(20).join(', ') + ', ...';
+    document.getElementById("list-of-words-consistent").innerHTML = validWords.splice(0,20).join(', ') + ', ...';
   }
   let thinkSpot = document.getElementById("thinking-while-submitting");
   thinkSpot.innerHTML="Request processed!";
@@ -319,4 +351,46 @@ function toggleAllSpoilers(){
     }
   }
 };
+
+function reset(){
+  let board = document.getElementById("input-board");
+  while(board.firstChild){
+    board.removeChild(board.firstChild);
+  }
+  makeTemplateRow();
+};
+
+function clearColors(){
+  let board = document.getElementById("input-board");
+  let rows = board.children;
+  for(let j=0; j<rows.length; j++){
+      let letters = rows[j].children[0].children; //This is an array of the individual boxes for the word
+      for(let i=0; i < letters.length; i++){
+        letters[i].setAttribute("data-color", "_");
+        letters[i].style.background='#D5DBDB';
+      }
+  }
+};
+
+function useTemplate(words, colors){
+  reset();
+  for(let j=0; j<Math.min(words.length, colors.length); j++){
+    makeNewRow(words[j], colors[j]);
+  }
+};
+
+function makeRandomInput(){
+
+let multiple = [ [["raise", "enter"], ["bgbyb", "bbybb"]], [["train", "anvil"], ["bbygy", "yybgb"]], [["pizza"], ["byybb"]], [["sweet", "tooth", "candy"], ["bybbb","bbgbb","bbybb"]], [["pasta", "sauce"], ["bbbyb","bbbby"]], [["board", "games"], ["bbbyy", "bbbyb"]], [["sharp", "knife", "point"], ["bbybb", "bbbbb", "bybbg"]], [["weeps", "cries", "teary"], ["bgbbb", "bybyb", "ygbgb"]], [["audio"], ["bygbb"]], [["input", "words"], ["bbyby", "bybby"]], [["jazzy", "piano"], ["bbbbb","ybbbb"]], [["water", "falls", "storm", "cloud"], ["bbbyy", "bbbby", "gbbgb", "bbbbb"]]]
+
+let oneSolution = [[["pride", "lions","tiger"], ["byyby", "yybbb", "bybyy"]], [["faint", "blobs", "voice"], ["bbbbb", "byybb", "bybby"]], [["couch", "divan", "sleep"], ["ybybb", "bybbb", "ybbbb"]], [["great", "worse", "champ"], ["bgbyy","bbygb", "bbybb"]] , [["close", "train"], ["gbbby", "bybyb"]] , [["price", "stuff"], ["bbygb","bbbyb"]], [["sweet", "tooth", "candy"], ["ybyby","gbbgb","bgbbb"]], [["flock", "birds", "raven"], ["bbbyb", "bbgbb", "ybybb"]], [["poker", "blind", "flush"], ["byybb","ggbbb", "bgbbb"]], [["glove", "hands", "thumb", "frost"], ["byybb", "bbbby", "bbgbb", "bbygb"]],[["raise", "flung", "crazy"], ["yybbb", "bbbbb", "gyybb"]], [["brain", "lobes", "think", "ideas"], ["bybyy", "bbbyb", "ybyyb", "gbgbb"]], [["tying"], ["ybggy"]], ["river", "flows", "delta"], ["bbbgb", "bbbyb", "bybyb"], [["broom", "sweep", "floor", "clean"], ["bbbbb", "bbbgb", "bbbbb", "ybybb"]], [["drink", "water"], ["ygybb", "bybby"]]];
+
+
+let allOptions = multiple.concat(oneSolution);
+var input = allOptions[Math.floor(Math.random()*allOptions.length)];
+useTemplate(input[0], input[1]); //"ideas"
+
+submitWordle();
+};
+
 </script>
