@@ -228,7 +228,7 @@ Each algorithm finds the next guess in time O(mn), where m is the number of poss
 <h4>Performance of algorithms</h4>
 Running these algorithms against all possible wordle answers gives us the following distribution for the number of guesses needed.
 
-<iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTouS5I2rlc8FiuTvwL1D6I_DKlYyEPousumqsjHJQ_lXi7OCBRCrc1eeGaboZg501XO9nPo5Ad2SBS/pubchart?oid=671343832&amp;format=interactive"></iframe>
+<iframe max-width="100%" width="auto" height="auto" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTouS5I2rlc8FiuTvwL1D6I_DKlYyEPousumqsjHJQ_lXi7OCBRCrc1eeGaboZg501XO9nPo5Ad2SBS/pubchart?oid=671343832&amp;format=interactive"></iframe>
 
 Here, the algorithms have almost identical distributions with the largest difference being that BestEntropy does a better job at guessing the word in 3 guesses (especially relative to BestAve).  The best of these algorithms is BestEntropy, and the worst is BestMax.  Each of these simple algorithms guesses the word within 6 tries with the following exceptions:
 
