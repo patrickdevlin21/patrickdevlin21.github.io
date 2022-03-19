@@ -68,7 +68,7 @@ table {
 
 
 .img-container{
-  width: 90%;
+  width: 40%;
   resize: both; 
 }
 </style>
