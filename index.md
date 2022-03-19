@@ -67,8 +67,7 @@ table {
 }
   
 img {
-    padding: 12px;
-    width: 100%;
+    width: 95%;
     height: auto;
 }
 
