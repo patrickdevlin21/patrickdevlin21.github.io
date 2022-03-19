@@ -38,7 +38,6 @@
 
 This is a script written by Pat Devlin to help solve the popular wordle puzzle.  Simply enter each word that you've guessed so far into the text box.  Select the revealed color of each letter by clicking on the corresponding square.
 
-<button id="random-input" onclick="makeRandomInput()">Random input</button>
 
 <div>
 <b>New word:</b> <input type="text" id="wordle-input-box" onchange="makeNewRow()" maxlength="5" size="7"><button type="button" onclick="makeNewRow()" class="more-button">Enter</button>
@@ -60,10 +59,9 @@ This is a script written by Pat Devlin to help solve the popular wordle puzzle. 
 <div id="error-submitting" class="error-message"></div>
 <em><span id="thinking-while-submitting" class="message" font-style="italic">Click above to solve</span></em>
 
-<br>
 
 <div>
-<button id="reset-colors" onclick="clearColors()">Clear colors</button><button id="reset-words" onclick="reset()">Reset</button></div>
+<button id="reset-colors" onclick="clearColors()">Clear colors</button> <button id="reset-words" onclick="reset()">Reset</button> <button id="random-input" onclick="makeRandomInput()">Random input</button></div>
 
 
 <div id="wordle-output">
