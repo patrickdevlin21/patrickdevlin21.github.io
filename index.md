@@ -160,12 +160,12 @@ This is a script written by Pat Devlin to help solve the popular <a href="https:
 </li>
 </ul>
 
-<h4>Performance of algorithms</h4>
+<h3>Performance of algorithms</h3>
 This site has three simple algorithms to solve the wordle in hard mode.  Running each of these algorithms for all possible wordle answers gives us the following distribution for the number of guesses needed.
 
 <div><img src="Guesses Needed per Algorithm.png"></div>
 
-<p>Here, the algorithms have almost identical distributions with the largest difference being that BestEntropy does a better job at guessing the word in 3 guesses (especially relative to BestAve).  The best of these algorithms is BestEntropy (requiring 3.60 guesses on average) followed by BestMin (averaging 3.62 guesses), and the worst is BestAve (averaging 3.67 guesses).  Each of these simple algorithms guesses the word within 6 tries with the following exceptions:
+<p>Here, the algorithms have almost identical distributions with the largest difference being that BestEntropy does a better job at guessing the word in 3 guesses (especially relative to BestAve).  The best of these algorithms is BestEntropy (requiring 3.60 guesses on average) followed by BestMax (averaging 3.62 guesses), and the worst is BestAve (averaging 3.67 guesses).  Each of these simple algorithms guesses the word within 6 tries with the following exceptions:
 
 <table>
   <thead>
@@ -270,17 +270,17 @@ This site has three simple algorithms to solve the wordle in hard mode.  Running
   </tbody>
 </table>
 
-Interestingly, there is a considerable amount of overlap among the worst words for these algorithms, with "goner" and "watch" being especially difficult to guess.  If desired, these guessing strategies could easily be improved to completely avoid using more than six guesses (e.g., simply running them not in hard mode accomplishes this), but the above data is of interest since it describes how the pure algorithms perform in hard mode.
+Interestingly, there is a considerable amount of overlap among the worst words for these algorithms, with "goner" and "watch" being especially difficult to guess.  If desired, these guessing strategies could easily be improved to completely avoid using more than six guesses (e.g., simply running them not in hard mode accomplishes this), but I find the above data interesting since it describes how these very natural pure algorithms perform in hard mode.
 
-<h3>How does this all work?</h3>
+<h2>How does this all work?</h2>
 (Description below is about to get more technical for those who care)
 
-<h4>Big picture</h4>
+<h3>Big picture</h3>
 This site (statically hosted by github) was built simply by writing its index file in html, css, and javascript.  The key functionality is to make an API call that invokes an AWS lambda instance that I set up.  This API call passes the board (with colors) as input to a python script that I wrote, and it receives a handful of outputs which are used to populate the page.
 
 <p>The repo for the stand-alone python code is <a href="https://github.com/patrickdevlin21/wordle-solver">available here</a> (for the lambda function, naturally I had to add a script that handles the API request, but this was done in exactly the way you're imagining).  To handle scaling [and out of fear of paying AWS some extra pennies in hosting fees], I also slightly optimized the python code for the lambda function by speeding up all calls by roughly a multiplicative factor of 10.  Memory allocation per call is minimal, so no additional effort was made to optimize that.
 
-<h4>Algorithms</h4>
+<h3>Algorithms</h3>
 The back-end is written in python, which was honestly just chosen for the sake of variety.  Another choice for a project like this could have been C or C++, especially since it's relatively easy to imagine writing many simple procedures, which we'll want to call many times (for instance, if we wanted to explore the exponential-size min-max decision tree for this problem).  Although a low-level compiled language would ultimately end up being substantially faster, I figured I'd do this one in python because I had just finished another project in C++.
 
 <p>The <strong>Random</strong> algorithm just outputs a random word consistent with the guesses thus far.  Each of the other three algorithms does the following (as described using the language of set theory):
@@ -334,7 +334,7 @@ Then the score of "jazzy" is a function of the numbers (1111, 2, 10, 1, ...).  T
 </ul></li>
 </ul>
 
-<h4>Analysis of algorithms</h4>
+<h3>Analysis of algorithms</h3>
 Each algorithm finds the next guess in time O(mn), where m is the number of possible words consistent with our information, and n is the set of words we're allowed to say.  In hard mode, we have m=n, so this runs in order O(m^2) time.  If we are given a dictionary and a set of previous guesses, we can find the set of words consistent with these guesses by just one pass through the dictionary*, so this procedure is done in linear time.  As for space, each algorithm only needs O(1) memory.
 
 
