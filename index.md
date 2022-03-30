@@ -311,7 +311,7 @@ For us, the score of a potential guess will be a function of how that guess part
 </ul>
 Then the score of "jazzy" is a function of the numbers (1111, 2, 10, 1, ...).  This sequence of 'class sizes' tells us that although jazzy is <em>sometimes</em> a convenient guess [e.g., if the j is green and the a is yellow, we know the answer must be JUNTA], it is often times lousy (e.g., half the time, all we find out is that it doesn't share any of those letters).
 
-<p>Although we lose information by only considering this sequence of numbers (1111, 2, 10, 1, ...)---e.g., if we land among the 10 guesses where J is green, how easy it is to distinguish those?---heuristically, this sequence of numbers is likely pretty telling of how good a guess "jazzy" is, and we just need to decide how to linearly  such sequences so that we can pick a 'best' choice.  There a bunch of good options, but three especially natural ones are the following:
+<p>Although we lose information by only considering this sequence of numbers (1111, 2, 10, 1, ...)---e.g., if we land among the 10 guesses where J is green, how easy it is to distinguish those?---heuristically, this sequence of numbers is likely pretty telling of how good a guess "jazzy" is, and we just need to decide how to linearly order such sequences so that we can pick a 'best' choice.  There are a bunch of good options, but three especially natural ones are the following:
 
 <ul>
 <li><strong>BestEntropy:</strong>
